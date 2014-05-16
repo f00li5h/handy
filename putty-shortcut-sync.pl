@@ -1,7 +1,7 @@
 #! perl
 #
 # putty-shortcut-sync.pl
-#    read PuTTY sessions from the registry 
+#    read PuTTY sessions from the registry
 #    create shortcuts to each of those sessions in a folder
 #    (you could, for example, put this folder in your start menu)
 #
@@ -34,7 +34,7 @@ my $ICONS_IN  = catdir (
 # set icons on the shortcuts - will help you know what you're clicking on
 my $RANDOM_ICONS  = 0;
 #     <true>        only if there isn't one
-#     all        replace the icon with a random one 
+#     all        replace the icon with a random one
 
 # putty is here, this is put in the shortcut
 my $PATH_TO_PUTTY = (map {
@@ -53,37 +53,37 @@ my $DEBUG = 0;
 my $help = 0;
 
 # usage message, including the defaults
-my $message = 
-"$0 [options] [session names] 
+my $message =
+"$0 [options] [session names]
 
 Options [default]:
  --verbose   spew debug messages to STDERR [$DEBUG]
  --target    create shortcuts here
              [$SHORTCUT_DIR]
- --putty     the path to putty            
+ --putty     the path to putty
              [$PATH_TO_PUTTY]
  --icons     look in here for images (named either the session or host name)
          [$ICONS_IN]
  --random    use random icons for a session if there is
          not an icon in --icons
          [$RANDOM_ICONS]
-            
+
 Session Names:
  leaving the name list emtpy means do all of them
  sessions don't need to exist in PuTTY yet, but the shortcut won't do anything helpful until you create a session with that name.
 ";
 
-use Getopt::Long; 
+use Getopt::Long;
 my  $opts_ok = GetOptions (my %getop=(
     'random'         => \$RANDOM_ICONS,
-    'verbose|debug'  => \$DEBUG,            'help|?'  => \$help,    
+    'verbose|debug'  => \$DEBUG,            'help|?'  => \$help,
     'target=s'       => \$SHORTCUT_DIR,     'putty=s' => \$PATH_TO_PUTTY,
     'icons=s'        => sub { warn "--icons=$ICONS_IN does not exist\n" if !-d ($ICONS_IN = $_[1]) },
-)); 
+));
 
 warn Dumper(\%getop) if $DEBUG;
 
-# really need putty, 
+# really need putty,
 warn "--putty=$PATH_TO_PUTTY does not exist\n" and $opts_ok = 0 unless -f $PATH_TO_PUTTY;
 
 # optional, so non-fatal
@@ -97,7 +97,7 @@ use constant
 
 # we're going to snag your PuTTY sessions from the registry
 my %registry;
-use Win32::TieRegistry 
+use Win32::TieRegistry
     Delimiter    => "\\",
     TiedHash     => \%registry,
 ;
